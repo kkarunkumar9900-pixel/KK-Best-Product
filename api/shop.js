@@ -2,8 +2,10 @@
 // Needs an Upstash Redis database (Vercel > Storage > Upstash Redis). It adds
 // KV_REST_API_URL and KV_REST_API_TOKEN (or UPSTASH_REDIS_REST_URL / _TOKEN) automatically.
 const crypto = require('crypto');
-const RURL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const RTOK = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+const envKeys = Object.keys(process.env);
+const findEnv = (re, not) => { const k = envKeys.find(x => re.test(x) && !(not && not.test(x))); return k ? process.env[k] : undefined; };
+const RURL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || findEnv(/REST(_API)?_URL$/);
+const RTOK = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || findEnv(/REST(_API)?_TOKEN$/, /READ_ONLY/);
 const HASHES = ['users', 'addrs', 'orders', 'products', 'supplier', 'reviews', 'support', 'LOT', 'LTK', 'rl'];
 const SHARED = ['products', 'supplier', 'reviews', 'support'];
 const sha = t => crypto.createHash('sha256').update('kk|' + t).digest('hex');
