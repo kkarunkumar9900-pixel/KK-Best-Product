@@ -1,5 +1,10 @@
 {
   "name": "kk-best-product",
   "version": "1.0.0",
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^2.1.0"
+  }
 }
